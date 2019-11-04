@@ -1,20 +1,19 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { SmurfContext } from '../contexts/SmurfContext';
-import * as helpers from './helperFunctions';
+import { FriendContext } from '../contexts/FriendContext';
+import * as helpers from '../utils/helperFunctions';
 
 
-const ESFWrapper = styled.div`
+const EFWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-top: 10px;
 
-	font-size: 2.4rem;
 	text-align: center;
 
 	h3 {
-		font-size: 3rem;
+		font-size: 2.8rem;
 		margin: 20px;
 	}
 
@@ -25,7 +24,7 @@ const ESFWrapper = styled.div`
 		width: 350px;
 		margin-top: 10px;
 		padding: 10px;
-		border: 2px solid royalblue;
+		border: 2px solid grey;
 		border-radius: 10px;
 	}
 
@@ -57,8 +56,8 @@ const ESFWrapper = styled.div`
 
 		button {
 			height: 30px;
-			background-color: dodgerblue;
-			color: white;
+			background-color: #AAA;
+			color: black;
 			border: none;
 			border-radius: 5px;
 			width: 80px;
@@ -66,46 +65,48 @@ const ESFWrapper = styled.div`
 
 			&:hover {
 				cursor: pointer;
+				background-color: grey;
+				color: white;
 			}
 		}
 	}
 `;
 
 
-const EditSmurf = (props) => {
+const EditFriend = (props) => {
 
-	// get smurf state and dispatcher
-	const { smurfState, dispatch } = useContext(SmurfContext);
+	// get friend state and dispatcher
+	const { friendState, dispatch } = useContext(FriendContext);
 
 	const id = Number.parseInt(props.match.params.id);
 
-	// which smurf are we editing?
-	const smurf = smurfState.smurfList.find(entry => entry.id === id);
+	// which friend are we editing?
+	const friend = friendState.friendList.find(entry => entry.id === id);
 
-	// initialize the form to current smurf values
-	const [formState, setFormState] = useState(smurf);
+	// initialize the form to current friend values
+	const [formState, setFormState] = useState(friend);
 
 
-	// if we didn't get a smurf, then the id was invalid.  return to list
-	if (smurf === undefined) {
-		props.history.push('/');
+	// if we didn't get a friend, then the id was invalid.  return to list
+	if (friend === undefined) {
+		props.history.push('/friends');
 		return ( <p>Loading...</p> );
 	}
 
 
 	const submitForm = (e) => {
 		e.preventDefault();
-		if (!(formState.name && formState.age && formState.height)) {
-			alert('You must supply a name, age, and height for your Smurf!');
+		if (!(formState.name && formState.age && formState.email)) {
+			alert('You must supply a name, age, and email for your friend!');
 			return;
 		}
-		helpers.editSmurf(formState, dispatch);
-		props.history.push('/');
+		helpers.editFriend(formState, dispatch);
+		props.history.push('/friends');
 	};
 
 	const discardEdits = (e) => {
 		e.preventDefault();
-		props.history.push('/');
+		props.history.push('/friends');
 	};
 
 
@@ -114,9 +115,9 @@ const EditSmurf = (props) => {
 	};
 
 	return (
-		<ESFWrapper>
-			<h3>Update Smurf information:</h3>
-			<form onSubmit={submitForm} className='add-smurf'>
+		<EFWrapper>
+			<h3>Update Friend Information:</h3>
+			<form onSubmit={submitForm} className='add-friend'>
 				<label name='name'><span>Name:</span>
 					<input name='name' className='name' placeholder='Name'
 						onChange={updateField} value={formState.name} />
@@ -125,17 +126,17 @@ const EditSmurf = (props) => {
 					<input name='age' className='age' placeholder='Age'
 						onChange={updateField} value={formState.age} />
 				</label>
-				<label name='height'><span>Height:</span>
-					<input name='height' className='height' placeholder='Height'
-						onChange={updateField} value={formState.height} />
+				<label name='email'><span>Email:</span>
+					<input name='email' className='email' placeholder='Email'
+						onChange={updateField} value={formState.email} />
 				</label>
 				<div className='button-bar'>
 					<button onClick={e => submitForm(e)}>Save</button>
 					<button onClick={e => discardEdits(e)}>Discard</button>
 				</div>
 			</form>
-		</ESFWrapper>
+		</EFWrapper>
 	);
 };
 
-export default EditSmurf;
+export default EditFriend;

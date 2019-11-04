@@ -1,21 +1,20 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
-import { SmurfContext } from '../contexts/SmurfContext';
-import * as helpers from './helperFunctions';
+import { FriendContext } from '../contexts/FriendContext';
+import * as helpers from '../utils/helperFunctions';
 
 
-const ASFWrapper = styled.div`
+const AFWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin-top: 10px;
 
-	font-size: 2.4rem;
 	text-align: center;
 
 	h3 {
-		font-size: 3rem;
-		margin: 10px;
+		font-size: 2.8rem;
+		margin: 20px;
 	}
 
 	form {
@@ -23,8 +22,9 @@ const ASFWrapper = styled.div`
 		flex-direction: column;
 		align-items: center;
 		width: 350px;
+		margin-top: 10px;
 		padding: 10px;
-		border: 2px solid royalblue;
+		border: 2px solid grey;
 		border-radius: 10px;
 	}
 
@@ -56,8 +56,8 @@ const ASFWrapper = styled.div`
 
 		button {
 			height: 30px;
-			background-color: dodgerblue;
-			color: white;
+			background-color: #AAA;
+			color: black;
 			border: none;
 			border-radius: 5px;
 			width: 80px;
@@ -65,30 +65,33 @@ const ASFWrapper = styled.div`
 
 			&:hover {
 				cursor: pointer;
+				background-color: grey;
+				color: white;
 			}
 		}
 	}
 `;
 
 
-const AddSmurfForm = () => {
+const AddFriend = (props) => {
 
 	// local state for form fields
-	const initialFormState = { name: '', age: '', height: '' };
+	const initialFormState = { name: '', age: '', email: '' };
 	const [formState, setFormState] = useState(initialFormState);
 
 	// dispatcher for submit function
-	const { dispatch } = useContext(SmurfContext);
+	const { dispatch } = useContext(FriendContext);
 
 
 	const submitForm = (e) => {
 		e.preventDefault();
-		if (!(formState.name && formState.age && formState.height)) {
-			alert('You must supply a name, age, and height for your Smurf!');
+		if (!(formState.name && formState.age && formState.email)) {
+			alert('You must supply a name, age, and height for your friend!');
 			return;
 		}
-		helpers.addSmurf(formState, dispatch);
+		helpers.addFriend(formState, dispatch);
 		resetForm(e);
+		props.history.push('/friends');
 	};
 
 	const updateField = (e) => {
@@ -101,9 +104,9 @@ const AddSmurfForm = () => {
 	};
 
 	return (
-		<ASFWrapper>
-			<h3>Enter a New Smurf here:</h3>
-			<form onSubmit={submitForm} className='add-smurf'>
+		<AFWrapper>
+			<h3>Enter Friend data here:</h3>
+			<form onSubmit={submitForm} className='add-friend'>
 				<label name='name'><span>Name:</span>
 					<input name='name' className='name' placeholder='Name'
 						onChange={updateField} value={formState.name} />
@@ -112,17 +115,17 @@ const AddSmurfForm = () => {
 					<input name='age' className='age' placeholder='Age'
 						onChange={updateField} value={formState.age} />
 				</label>
-				<label name='height'><span>Height:</span>
-					<input name='height' className='height' placeholder='Height'
-						onChange={updateField} value={formState.height} />
+				<label name='email'><span>Email:</span>
+					<input name='email' className='email' placeholder='Email'
+						onChange={updateField} value={formState.email} />
 				</label>
 				<div className='button-bar'>
 					<button onClick={e => submitForm(e)}>Submit</button>
 					<button onClick={e => resetForm(e)}>Clear</button>
 				</div>
 			</form>
-		</ASFWrapper>
+		</AFWrapper>
 	);
 };
 
-export default AddSmurfForm;
+export default AddFriend;

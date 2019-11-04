@@ -8,21 +8,22 @@ const FriendWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 10px;
+	margin: 10px;
 	padding: 10px;
 
-	background-color: dodgerblue;
-	color: white;
-	width: 300px;
+	background-color: lightgrey;
+	color: black;
+	width: 340px;
 	border-radius: 10px;
+	border: 1px solid grey;
 
 	p {
 		margin: 5px;
-		font-size: 2rem;
+		font-size: 1.8rem;
 	}
 
 	.name {
-		font-size: 2.6rem;
+		font-size: 2.4rem;
 	}
 
 	.button-bar {
@@ -36,8 +37,8 @@ const FriendWrapper = styled.div`
 
 		button {
 			height: 20px;
-			background-color: white;
-			color: royalblue;
+			background-color: #AAA;
+			color: black;
 			border: none;
 			border-radius: 5px;
 			width: 50px;
@@ -45,6 +46,8 @@ const FriendWrapper = styled.div`
 
 			&:hover {
 				cursor: pointer;
+				background-color: grey;
+				color: white;
 			}
 		}
 	}
@@ -68,12 +71,11 @@ const Friend = (props) => {
 	};
 
 
-
 	return (
 		<FriendWrapper>
 			<p className='name'>{props.friend.name}</p>
 			<p className='age'>Age: {props.friend.age}</p>
-			<p className='email'>Email: {props.friend.email}</p>
+			<p className='email'>{props.friend.email}</p>
 			<div className='button-bar'>
 				<button onClick={e => editFriend(e)}>Edit</button>
 				<button onClick={e => deleteFriend(e)}>Delete</button>

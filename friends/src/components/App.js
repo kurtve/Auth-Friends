@@ -11,6 +11,8 @@ import ProtectedRoute from './ProtectedRoute';
 import Login from './Login';
 import Logout from './Logout';
 import Welcome from './Welcome';
+import AddFriend from './AddFriend';
+import EditFriend from './EditFriend';
 import FriendList from './FriendList';
 
 
@@ -18,15 +20,32 @@ const AppWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 20px;
 
-	font-size: 2.4rem;
-	text-align: center;
+	.nav {
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-around;
+		width: 100%;
+		height: 80px;
+		background-color: lightgrey;
 
-	h1 {
-		font-size: 4rem;
-		font-weight: bold;
-		margin: 10px;
+		h3 {
+			font-size: 3.4rem;
+			font-weight: bold;
+			margin: 10px;
+		}
+
+		a {
+			font-size: 1.8rem;
+			text-decoration: none;
+			color: #333;
+
+			&:hover {
+				font-weight: bold;
+				cursor: pointer;
+			}
+		}
 	}
 `;
 
@@ -45,17 +64,19 @@ const App = () => {
 	return (
 		<FriendContext.Provider value={ {friendState, dispatch} }>
 			<AppWrapper>
-				<h1>Auth-Friends</h1>
-				<nav>
+				<div className='nav'>
+					<h3>Friends!</h3>
 					<Link to='/'>Home</Link>
 					{loggedIn && <Link to='/friends'>Friends</Link>}
 					{!loggedIn && <Link to='/login'>Login</Link>}
 					{loggedIn && <Link to='/logout'>Logout</Link>}
-				</nav>
+				</div>
 
 				<Route exact path='/' component={Welcome} />
 				<ProtectedRoute path='/friends' component={FriendList} />
 				<ProtectedRoute path='/logout' component={Logout} />
+				<ProtectedRoute path='/edit/:id' component={EditFriend} />
+				<ProtectedRoute path='/add' component={AddFriend} />
 				<Route path='/login' component={Login} />
 			</AppWrapper>
 		</FriendContext.Provider>
