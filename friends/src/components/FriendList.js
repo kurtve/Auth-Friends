@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -42,11 +42,7 @@ const FLWrapper = styled.div`
 
 const FriendList = (props) => {
 
-	console.log('in FriendList');
-
 	const { friendState } = useContext(FriendContext);
-
-	console.log(friendState.friendList);
 
 	return (
 		<FLWrapper>

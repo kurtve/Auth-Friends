@@ -58,7 +58,7 @@ const App = () => {
 
 	useEffect(() => {
 		helpers.getFriends(dispatch);
-	}, []);
+	}, [friendState.loggedIn]);
 
 
 	return (

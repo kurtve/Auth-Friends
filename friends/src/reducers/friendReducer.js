@@ -1,5 +1,8 @@
-
 // friend actions
+export const LOGIN_START = 'LOGIN_START';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+
 export const LOAD_START = 'LOAD_START';
 export const LOAD_SUCCESS = 'LOAD_SUCCESS';
 export const LOAD_FAILURE = 'LOAD_FAILURE';
@@ -20,6 +23,7 @@ export const EDIT_FAILURE = 'EDIT_FAILURE';
 export const initialState = {
 	apiInProgress: false,
 	apiError: '',
+	loggedIn: !(!localStorage.getItem('AF-token')),
 	friendList: []
 };
 
@@ -27,6 +31,16 @@ export const initialState = {
 // friend reducer function
 export const friendReducer = (state, action) => {
 	switch (action.type) {
+		case LOGIN_START:
+			return {...state, apiInProgress: true, apiError: '', loggedIn: false};
+
+		case LOGIN_SUCCESS:
+			return {...state, apiInProgress: false, apiError: '', loggedIn: true};
+
+		case LOGIN_FAILURE:
+			return {...state, apiInProgress: false, apiError: action.payload, loggedIn: false};
+
+
 		case LOAD_START:
 			return {...state, apiInProgress: true, apiError: ''};
 

@@ -1,3 +1,4 @@
+import { LOGIN_START, LOGIN_SUCCESS, LOGIN_FAILURE } from '../reducers/friendReducer';
 import axios from 'axios';
 
 
@@ -17,10 +18,7 @@ export const setToken = (token) => {
 };
 
 
-
 export const apiWithAuth = () => {
-	console.log('inside apiWithAuth');
-
 	return axios.create({
 		baseURL: baseURL,
 		headers: {
@@ -31,18 +29,22 @@ export const apiWithAuth = () => {
 };
 
 
-export const login = (credentials, errorSetter) => {
-	console.log('inside login');
+export const login = (credentials, errorSetter, dispatch) => {
 
+	dispatch({ type: LOGIN_START });
 	axios.post(`${baseURL}/api/login`, credentials)
 		.then(res => {
 			setToken(res.data.payload);
-
-			console.log('recieved token', res.data.payload);
+			errorSetter('');
+			dispatch({type: LOGIN_SUCCESS});
 		})
 		.catch(err => {
-			console.log(err);
-			errorSetter(err);
+			if (err.response.status === 403) {
+				errorSetter('Invalid username/password pair');
+			} else {
+				errorSetter('An error occurred. Please try again.');
+			}
+			dispatch({ type: LOGIN_FAILURE, payload: err.message });
 		});
 };
 
